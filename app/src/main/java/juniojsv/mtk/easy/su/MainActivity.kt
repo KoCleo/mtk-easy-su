@@ -12,14 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.net.toUri
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.FullScreenContentCallback
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
-import com.google.android.gms.ads.admanager.AdManagerAdRequest
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+
 import juniojsv.mtk.easy.su.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +27,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var preferences: SharedPreferences
     private lateinit var github: GithubRepository
     private lateinit var binding: ActivityMainBinding
-    private var advertising: InterstitialAd? = null
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
@@ -69,21 +62,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }.show()
         }
 
-        try {
-            MobileAds.initialize(this) {
-                onSetupBannerAd()
-                val admobTestDevice = getString(R.string.admob_test_device)
-                if (BuildConfig.DEBUG && admobTestDevice.isNotBlank()) {
-                    MobileAds.setRequestConfiguration(
-                        RequestConfiguration.Builder().setTestDeviceIds(
-                            mutableListOf(admobTestDevice)
-                        ).build()
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(LOG_ADMOB_INITIALIZATION, "${e.message}")
-        }
+
 
         launch {
             val update = getLatestUpdateAvailable()
@@ -148,20 +127,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         binding.mButtonTryRoot.setOnClickListener { button ->
-            getString(R.string.please_wait).toast(this, true)
-            button.isEnabled = false
-            onLoadFullScreenAd {
-                ExploitHandler(this) { result ->
-                    advertising?.show(this)
-                    binding.mLog.text = result.log
-                    binding.mButtonCopy.isEnabled = true
-                    button.isEnabled = true
-                    if (result.isSuccessful)
-                        getString(R.string.success).toast(this, true)
-                    else
-                        getString(R.string.fail).toast(this, false)
-                }.execute()
-            }
+            binding.mButtonTryRoot.isEnabled = false
+            binding.mLog.text = ""
+            ExploitHandler(this) { result ->
+                binding.mLog.text = result.log
+                binding.mButtonCopy.isEnabled = true
+                binding.mButtonTryRoot.isEnabled = true
+                if (result.isSuccessful)
+                    getString(R.string.success).toast(this, true)
+                else
+                    getString(R.string.fail).toast(this, false)
+            }.execute()
         }
 
         binding.mButtonCopy.setOnClickListener {
@@ -183,31 +159,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    private fun onSetupBannerAd() {
-        binding.mBannerAd.loadAd(AdRequest.Builder().build())
-    }
 
-    private fun onLoadFullScreenAd(onComplete: (error: LoadAdError?) -> Unit) =
-        InterstitialAd.load(
-            this, getString(R.string.interstitial_advertising_id),
-            AdManagerAdRequest.Builder().build(),
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(interstitial: InterstitialAd) {
-                    advertising = interstitial
-                    advertising
-                        ?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                        override fun onAdDismissedFullScreenContent() {
-                            advertising = null
-                        }
-                    }
-                    onComplete(null)
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    advertising = null
-                    onComplete(error)
-                }
-            },
-        )
 
 }

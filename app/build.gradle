@@ -2,10 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'com.google.gms.google-services'
-
-apply plugin: 'com.google.firebase.crashlytics'
-
 final Properties env = new Properties()
 file("${rootDir}/env.properties").withInputStream { env.load(it) }
 
@@ -45,10 +41,6 @@ android {
 
     buildTypes {
         configureEach {
-            resValue "string", "application_advertising_id", env['application.advertising.id']
-            resValue "string", "interstitial_advertising_id", env['interstitial.advertising.id']
-            resValue "string", "banner_advertising_id", env['banner.advertising.id']
-            resValue "string", "admob_test_device", env['admob.test.device']
         }
         release {
             minifyEnabled true
@@ -70,11 +62,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'com.google.android.material:material:1.5.0'
-    implementation 'com.google.android.gms:play-services-ads:24.1.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation platform('com.google.firebase:firebase-bom:33.11.0')
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
