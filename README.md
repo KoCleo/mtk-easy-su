@@ -1,4 +1,4 @@
-我是 [中国人](https://github.com/KoCleo/mtk-easy-su/blob/master/readme_zh-CN.md)
+我是 [中国人[汉化说明]](https://github.com/KoCleo/mtk-easy-su/blob/master/readme_zh-CN.md)
 
 # Mtk Easy Su
 
