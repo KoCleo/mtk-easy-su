@@ -14,7 +14,7 @@
     <string name="please_wait">请稍候…</string>
     <string name="version">版本</string>
     <string name="success">耶！ROOT获取成功，请使用Magisk Manager管理 :)</string>
-    <string name="fail">失败，检查64位开关，重试多次还是不行则代表设备本APP :(</string>
+    <string name="fail">失败，检查64位开关，重试多次还是不行则代表设备不支持本APP :(</string>
     <string name="accept">接受</string>
     <string name="about_word">读我</string>
     <string name="credits">贡献者</string>
