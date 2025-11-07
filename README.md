@@ -1,3 +1,5 @@
+我是 [中国人[汉化]](https://github.com/KoCleo/mtk-easy-su/blob/master/readme_zh-CN.md)
+
 # Mtk Easy Su
 
 [![](https://img.shields.io/github/downloads/JunioJsv/mtk-easy-su/total.svg)](https://github.com/JunioJsv/mtk-easy-su/releases/)
